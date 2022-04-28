@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+	<style type="text/css">
+		.wawes{
+			position: absolute;
+			background-size: 100% 100%;
+			width: 2000px;
+			height: 300px;
+			left: 0px; 
+			z-index: 2;
+		}
+		.curtains{
+			position: absolute;
+			background-size: 100% 100%;
+			width: 300px;
+			height: 990px;
+			top: 0px;
+		}
+		.duck{
+			background-size: 100% 100%;
+			height: 100px;
+			width: 100px;
+			position: absolute;
+			z-index: 2;
+		}
+		.playb{
+			background-color: #ff7c20;
+			height: 60px;
+			width: 200px;
+			color: white;
+			font-size: 30px;
+			border-style: none;
+			border-radius: 22px;
+			transition-duration: 0.5s;
+			border: 2px solid black;
+		}
+		.scbox{
+			background-color: #ff7c20;
+			height: 60px;
+			width: 200px;
+			color: white;
+			font-size: 30px;
+			border-radius: 22px;
+			transition-duration: 0.5s;
+			border: 2px solid black;
+			display: none;
+			margin-left: auto;
+			margin-right: auto;
+		}
+		.playb:hover{
+			background-color: #b1610b;
+		}
+	</style>
+</head>
+<body style="overflow-x:hidden; overflow-y:hidden;">
+	<div style="height: 60px; width: 200px;margin-left: auto; margin-right: auto;"><button class="playb">Начать игру</button></div>
+	<div class="scbox">Ваш счёт: <span class="sc"></span></div>
+	
+	<div class="wawes" style="background-image: url(wave1.png); top: 300px;"></div>
+	<div class="wawes" style="background-image: url(wave2.png); top: 500px;"></div>
+	<div class="wawes" style="background-image: url(wave3.png); top: 700px;"></div>
+	<div class="curtains" style="background-image: url(1s.png); left: 0px;"></div>
+	<div class="curtains" style="background-image: url(2s.png); right: 0px;"></div>
+	<script type="text/javascript">
+
+		let scbox = document.querySelector(".scbox");
+		let sc = document.querySelector(".sc");
+		let score = 0;
+		let playb = document.querySelector(".playb");
+		let toppos = [350,550,750]
+		let leftpos = [300,550,800,1050,1300,1550]
+
+
+		playb.onclick = function(){
+
+			scbox.style.display = "block";
+			sc.innerHTML = score;
+
+			let randomNum = function(arg){
+				let random = Math.round(Math.random()*arg)
+				return(random)
+			}
+
+			let createDuck = function(){
+				let duck = document.createElement("div");
+				if(randomNum(2)==0){
+					duck.style.backgroundImage = "url(1.png)"
+					duck.name = "norm"
+				}
+				else if(randomNum(2)==1){
+					duck.style.backgroundImage = "url(2.png)"
+					duck.name = "good"
+				}
+				else if(randomNum(2)==1){
+					duck.style.backgroundImage = "url(3.png)"
+					duck.name = "bad"
+				}
+				document.body.appendChild(duck);
+				duck.classList.add("duck");
+				duck.style.top = toppos[randomNum(2)]+ "px";
+				duck.style.left = leftpos[randomNum(5)] + "px";
+
+				duck.onclick = function(){
+					duck.style.display ="none"
+					if(duck.name=="good"){
+						score=score+2;
+					}
+					else if(duck.name=="bad"){
+						score=score-2;
+					}
+					else if(duck.name=="norm"){
+						score=score+1;
+					}
+					sc.innerHTML = score;
+				}
+			}
+
+			let createDucks = setInterval(createDuck, 500);
+
+			let itog = function(){
+				clearInterval(createDucks);
+				if(score<10){
+					alert("Ты проиграл со счётом: "+score)
+				}
+				else if(score>=10){
+					alert("Ты выиграл со счётом: "+score)
+				}
+			}
+
+			setTimeout(itog,9000)
+
+			playb.style.display = "none";
+		}
+		
+
+	</script>
+</body>
+</html>
